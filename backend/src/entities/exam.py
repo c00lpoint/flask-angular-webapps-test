@@ -1,6 +1,7 @@
 from sqlalchemy import Column, String
 
-from .entity import Entity, Base
+from . import Base
+from .entity import Entity
 
 
 class Exam(Entity, Base):
@@ -9,7 +10,7 @@ class Exam(Entity, Base):
     title = Column(String)
     description = Column(String)
 
-    def __init__(self, title, desciption, create_by):
+    def __init__(self, title, description, create_by):
         Entity.__init__(self, create_by)
         self.title = title
-        self.description = desciption
+        self.description = description

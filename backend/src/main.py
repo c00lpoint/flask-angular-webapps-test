@@ -1,27 +1,12 @@
-from .entities.entity import Session, engine, Base
-from .entities.exam import Exam
+from . import app
+from .entities import Base, engine
+from .routes import get_exams, add_exam
+from .sample_utils import generate_sample_data
 
-# generate database schema
 Base.metadata.create_all(engine)
+generate_sample_data()
 
-# start session
-session = Session()
+if __name__ == '__main__':
 
-# check for existing data
-
-exams = session.query(Exam).all()
-
-if len(exams) == 0:
-    # create and persist dummy exam
-    python_exam = Exam('SQLAlchemy Exam', 'Test your knowledge about SQLAlchemy', 'script')
-    session.add(python_exam)
-    session.commit()
-    session.close()
-
-    # reload exams
-    exams = session.query(Exam).all()
-
-# show existing exams
-print('### Exams:')
-for exam in exams:
-    print(f'({exam.id}) {exam.title} - {exam.description}')
+    # if needed, generate database schema
+    app.run(debug=True)

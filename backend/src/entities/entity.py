@@ -1,14 +1,5 @@
 from datetime import datetime
 from sqlalchemy import create_engine, Column, String, Integer, DateTime
-from sqlalchemy.orm import sessionmaker
-from sqlalchemy.ext.declarative import declarative_base
-
-db_conn_str = 'sqlite:///data.db'
-
-engine = create_engine(db_conn_str)
-
-Session = sessionmaker(bind=engine)
-Base = declarative_base()
 
 
 class Entity:
