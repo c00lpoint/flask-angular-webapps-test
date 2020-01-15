@@ -4,10 +4,7 @@ from .entities.exam import Exam
 
 def generate_sample_data():
 
-
-
     session = Session()
-
     exams = session.query(Exam).all()
 
     if len(exams) == 0:
