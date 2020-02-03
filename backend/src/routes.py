@@ -4,20 +4,21 @@ from . import app
 from .entities import Session
 from .entities.exam import Exam
 from .schemas.exam import ExamSchema
+from .contextmgrs import open_session
 
 
 @app.route('/get-exams')
 def get_exams():
-    # fetching from database
-    session = Session()
-    exam_objects = session.query(Exam).all()
 
-    # transforming into JSON-serializable objects
-    schema = ExamSchema(many=True)
-    exams = schema.dump(exam_objects)
+    with open_session(Session) as session:
+        # fetching from database
+        exam_objects = session.query(Exam).all()
+
+        # transforming into JSON-serializable objects
+        schema = ExamSchema(many=True)
+        exams = schema.dump(exam_objects)
 
     # serializing as JSON
-    session.close()
     return jsonify(exams)
 
 
@@ -28,13 +29,12 @@ def add_exam():
 
     exam = Exam(**posted_exam, create_by='HTTP post request')
 
-    # persist exam
-    session = Session()
-    session.add(exam)
-    session.commit()
+    with open_session(Session) as session:
+        # persist exam
+        session.add(exam)
+        session.commit()
 
     # return created exam
     new_exam = ExamSchema().dump(exam)
-    session.close()
     return jsonify(new_exam), 201
 

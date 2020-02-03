@@ -1,5 +1,5 @@
 from datetime import datetime
-from sqlalchemy import create_engine, Column, String, Integer, DateTime
+from sqlalchemy import Column, String, Integer, DateTime
 
 
 class Entity:
